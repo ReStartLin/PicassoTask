@@ -26,7 +26,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     private DatabaseHelper(Context context) {
-        super(context, "article.db", null, 1);
+        super(context, "article.db", null, 2);
     }
 
     @Override

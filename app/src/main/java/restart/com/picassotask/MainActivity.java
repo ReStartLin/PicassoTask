@@ -1,5 +1,6 @@
 package restart.com.picassotask;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
+                startActivity(new Intent(MainActivity.this, ShowActivity.class));
                 break;
 
         }
@@ -81,12 +83,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(MainActivity.this, "" + nowArticle.toString(), Toast.LENGTH_SHORT).show();
-                int rep = dao.insert(nowArticle);
-                if (rep >= 0) {
-                    Toast.makeText(MainActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                Article query = dao.query(nowArticle.getTitle());
+                if (query == null) {
+                    int rep = dao.insert(nowArticle);
+                    if (rep >= 0) {
+                        Toast.makeText(MainActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "收藏失败", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(MainActivity.this, "收藏失败", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(MainActivity.this, "文章已存在", Toast.LENGTH_SHORT).show();
+                } 
                 getArticle();
             }
         });
@@ -127,14 +134,6 @@ public class MainActivity extends AppCompatActivity {
                             authorTv.setText(article.getAuthor());
                             contentTv.setText(article.getContent());
                             Picasso.with(MainActivity.this).load(IMG_URL).into(showImg);
-                            Article query = dao.query(nowArticle.get_id());
-                            if (query == null) {
-                                addBtn.setText("收藏");
-                                addBtn.setEnabled(true);
-                            } else {
-                                addBtn.setText("已收藏");
-                                addBtn.setEnabled(false);
-                            }
                         }
                     });
                 } catch (JSONException e) {

@@ -6,7 +6,9 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import restart.com.picassotask.db.DatabaseHelper;
 import restart.com.picassotask.entity.Article;
@@ -67,6 +69,7 @@ public class MyDAO {
 
     /**
      * 查询所有
+     *
      * @return
      */
     public List<Article> queryAll() {
@@ -78,12 +81,20 @@ public class MyDAO {
         }
         return null;
     }
+
     /*
         查询单个
      */
-    public Article query(int _id) {
+    public Article query(String _id) {
         try {
-            return dao.queryForId(_id);
+            Map<String, Object> map = new HashMap<>();
+            map.put("title", _id);
+            List<Article> article = dao.queryForFieldValues(map);
+            if (article.size()>0) {
+                return article.get(0);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

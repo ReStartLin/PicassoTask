@@ -3,12 +3,14 @@ package restart.com.picassotask.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018/2/22.
  */
 @DatabaseTable(tableName = "tb_article")
 
-public class Article {
+public class Article implements Serializable{
     @DatabaseField(generatedId = true)
     private int _id;
     @DatabaseField
